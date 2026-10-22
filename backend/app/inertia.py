@@ -49,6 +49,16 @@ ZIGGY_ROUTES = {
     "configuration.rules.update": {"uri": "configuracion/reglas/{maintenanceRule}", "methods": ["PUT"]},
     "configuration.rules.toggle": {"uri": "configuracion/reglas/{maintenanceRule}/estado", "methods": ["PATCH"]},
     "configuration.institution.update": {"uri": "configuracion/datos-institucionales", "methods": ["POST"]},
+    "password.request": {"uri": "forgot-password", "methods": ["GET", "HEAD"]},
+    "password.email": {"uri": "forgot-password", "methods": ["POST"]},
+    "password.reset": {"uri": "reset-password/{token}", "methods": ["GET", "HEAD"]},
+    "password.update": {"uri": "reset-password", "methods": ["POST"]},
+    "register": {"uri": "register", "methods": ["GET", "HEAD", "POST"]},
+    "profile.edit": {"uri": "settings/profile", "methods": ["GET", "HEAD"]},
+    "profile.update": {"uri": "settings/profile", "methods": ["PATCH"]},
+    "profile.destroy": {"uri": "settings/profile", "methods": ["DELETE"]},
+    "password.edit": {"uri": "settings/password", "methods": ["GET", "HEAD"]},
+    "appearance": {"uri": "settings/appearance", "methods": ["GET", "HEAD"]},
 }
 
 def get_current_user(request: Request, db: Session) -> Optional[User]:
@@ -137,7 +147,7 @@ def render_html_shell(page_data: Dict[str, Any]) -> str:
 
     vite_tags = get_vite_tags()
 
-    html = f"""<!DOCTYPE html>
+    template = """<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
@@ -147,14 +157,44 @@ def render_html_shell(page_data: Dict[str, Any]) -> str:
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script>
-        window.Ziggy = {ziggy_json};
+        window.Ziggy = __ZIGGY_JSON__;
+        window.route = function(name, params) {
+            if (!name) return { current: function(p) {
+                var path = window.location.pathname.replace(/^\\//, '');
+                if (!p) return path;
+                var re = new RegExp('^' + p.replace(/\\*/g, '.*') + '$');
+                return re.test(path);
+            }};
+            var routes = (window.Ziggy && window.Ziggy.routes) || {};
+            var r = routes[name];
+            var uri = r ? r.uri : ('/' + name.replace(/\\./g, '/'));
+            if (params !== undefined && params !== null) {
+                if (typeof params === 'object' && !Array.isArray(params)) {
+                    for (var k in params) {
+                        uri = uri.replace('{' + k + '}', encodeURIComponent(params[k]));
+                        uri = uri.replace('{' + k + '?}', encodeURIComponent(params[k]));
+                    }
+                } else {
+                    uri = uri.replace(/\\{[a-zA-Z_]+\\??\\}/, encodeURIComponent(params));
+                }
+            }
+            uri = uri.replace(/\\/\\{[a-zA-Z_]+\\?\\}/g, '');
+            return uri.startsWith('/') ? uri : ('/' + uri);
+        };
     </script>
-    {vite_tags}
+    __VITE_TAGS__
 </head>
 <body class="font-sans antialiased">
-    <div id="app" data-page='{page_json.replace("'", "&#39;")}'></div>
+    <div id="app" data-page='__PAGE_DATA__'></div>
 </body>
 </html>"""
+
+    html = (
+        template
+        .replace("__ZIGGY_JSON__", ziggy_json)
+        .replace("__VITE_TAGS__", vite_tags)
+        .replace("__PAGE_DATA__", page_json.replace("'", "&#39;"))
+    )
     return html
 
 def inertia_render(

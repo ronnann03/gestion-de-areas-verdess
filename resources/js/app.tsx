@@ -10,7 +10,9 @@ declare global {
     const route: typeof routeFn;
 }
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+(window as any).route = routeFn;
+
+const appName = import.meta.env.VITE_APP_NAME || 'Gestión de Áreas Verdes';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
