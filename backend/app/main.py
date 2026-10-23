@@ -52,6 +52,11 @@ async def inertia_validation_exception_handler(request: Request, exc: RequestVal
 # Montar almacenamiento estático de fotos y documentos
 app.mount("/storage", StaticFiles(directory=str(STORAGE_DIR)), name="storage")
 
+# Montar imágenes públicas institucionales
+public_images = BASE_DIR.parent / "public" / "images"
+if public_images.exists():
+    app.mount("/images", StaticFiles(directory=str(public_images)), name="images")
+
 # Montar build estático del frontend si existe
 public_build = BASE_DIR.parent / "public" / "build"
 if public_build.exists():
