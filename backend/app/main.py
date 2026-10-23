@@ -1,7 +1,9 @@
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 
 from backend.app.database import engine, Base, STORAGE_DIR, BASE_DIR
@@ -33,6 +35,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(RequestValidationError)
+async def inertia_validation_exception_handler(request: Request, exc: RequestValidationError):
+    if request.headers.get("X-Inertia"):
+        errors = {}
+        for err in exc.errors():
+            loc = err.get("loc", [])
+            field = str(loc[-1]) if loc else "general"
+            errors[field] = err.get("msg", "Error de validación")
+        request.session["errors"] = errors
+        referer = request.headers.get("referer", request.url.path)
+        return RedirectResponse(url=referer, status_code=status.HTTP_303_SEE_OTHER)
+    return JSONResponse(status_code=422, content={"detail": exc.errors()})
 
 # Montar almacenamiento estático de fotos y documentos
 app.mount("/storage", StaticFiles(directory=str(STORAGE_DIR)), name="storage")

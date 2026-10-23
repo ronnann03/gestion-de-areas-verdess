@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import bcrypt
 from backend.app.database import get_db
 from backend.app.models.user import User
-from backend.app.inertia import inertia_render, inertia_redirect
+from backend.app.inertia import inertia_render, inertia_redirect, get_request_data
 
 router = APIRouter()
 
@@ -38,12 +38,17 @@ def login_page(request: Request, db: Session = Depends(get_db)):
 @router.post("/login")
 async def login(
     request: Request,
-    email: str = Form(...),
-    password: str = Form(...),
-    remember: bool = Form(False),
     db: Session = Depends(get_db)
 ):
-    user = db.query(User).filter(User.email == email.strip()).first()
+    data = await get_request_data(request)
+    email = str(data.get("email", "")).strip()
+    password = str(data.get("password", ""))
+
+    if not email or not password:
+        request.session["errors"] = {"email": "Debe ingresar su correo electrónico y contraseña."}
+        return inertia_redirect("/login", request=request)
+
+    user = db.query(User).filter(User.email == email).first()
     if not user or not verify_password(password, user.password):
         request.session["errors"] = {"email": "Las credenciales proporcionadas no son válidas."}
         return inertia_redirect("/login", request=request)

@@ -61,6 +61,56 @@ ZIGGY_ROUTES = {
     "appearance": {"uri": "settings/appearance", "methods": ["GET", "HEAD"]},
 }
 
+from starlette.requests import Request as StarletteRequest
+from starlette.datastructures import FormData
+
+_orig_get_form = StarletteRequest._get_form
+
+async def custom_get_form(self, *args, **kwargs):
+    if self._form is None:
+        ct = self.headers.get("content-type", "")
+        if "application/json" in ct:
+            try:
+                body = await self.body()
+                if body:
+                    data = json.loads(body)
+                    if isinstance(data, dict):
+                        items = []
+                        for k, v in data.items():
+                            if v is None:
+                                continue
+                            if isinstance(v, bool):
+                                items.append((k, "true" if v else "false"))
+                            elif isinstance(v, list):
+                                for item in v:
+                                    items.append((k, str(item)))
+                            elif isinstance(v, dict):
+                                items.append((k, json.dumps(v)))
+                            else:
+                                items.append((k, str(v)))
+                        self._form = FormData(items)
+                        return self._form
+            except Exception:
+                pass
+    return await _orig_get_form(self, *args, **kwargs)
+
+StarletteRequest._get_form = custom_get_form
+
+async def get_request_data(request: Request) -> Dict[str, Any]:
+    ct = request.headers.get("content-type", "")
+    if "application/json" in ct:
+        try:
+            return await request.json()
+        except Exception:
+            return {}
+    elif "application/x-www-form-urlencoded" in ct or "multipart/form-data" in ct:
+        try:
+            form = await request.form()
+            return dict(form)
+        except Exception:
+            return {}
+    return dict(request.query_params)
+
 def get_current_user(request: Request, db: Session) -> Optional[User]:
     user_id = request.session.get("user_id")
     if not user_id:
