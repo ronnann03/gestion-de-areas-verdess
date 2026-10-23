@@ -52,8 +52,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                 <div className="grid gap-5">
                     {/* CORREO ELECTRÓNICO */}
                     <div className="grid gap-2">
-                        <Label htmlFor="email" className="text-xs font-semibold text-emerald-100 flex items-center gap-1.5">
-                            <Mail className="h-3.5 w-3.5 text-emerald-400" />
+                        <Label htmlFor="email" className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                            <Mail className="h-3.5 w-3.5 text-emerald-600" />
                             Correo electrónico
                         </Label>
 
@@ -67,7 +67,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="admin@nuevochimbote.gob.pe"
-                            className="border-emerald-500/30 bg-slate-950/60 text-white placeholder:text-slate-500 focus-visible:ring-emerald-500 focus-visible:border-emerald-500 rounded-xl"
+                            className="border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus-visible:ring-emerald-600 focus-visible:border-emerald-600 rounded-xl shadow-xs"
                         />
 
                         <InputError message={errors.email} />
@@ -76,13 +76,13 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     {/* CONTRASEÑA */}
                     <div className="grid gap-2">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="password" className="text-xs font-semibold text-emerald-100 flex items-center gap-1.5">
-                                <KeyRound className="h-3.5 w-3.5 text-emerald-400" />
+                            <Label htmlFor="password" className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                                <KeyRound className="h-3.5 w-3.5 text-emerald-600" />
                                 Contraseña
                             </Label>
 
                             {canResetPassword && (
-                                <TextLink href={route('password.request')} className="text-xs text-emerald-400 hover:text-emerald-300 transition" tabIndex={5}>
+                                <TextLink href={route('password.request')} className="text-xs text-emerald-600 hover:text-emerald-700 transition font-medium" tabIndex={5}>
                                     ¿Olvidó su contraseña?
                                 </TextLink>
                             )}
@@ -97,7 +97,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="••••••••••••"
-                            className="border-emerald-500/30 bg-slate-950/60 text-white placeholder:text-slate-500 focus-visible:ring-emerald-500 focus-visible:border-emerald-500 rounded-xl"
+                            className="border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus-visible:ring-emerald-600 focus-visible:border-emerald-600 rounded-xl shadow-xs"
                         />
 
                         <InputError message={errors.password} />
@@ -111,10 +111,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             tabIndex={3}
                             checked={data.remember}
                             onCheckedChange={(checked) => setData('remember', checked === true)}
-                            className="border-emerald-500/40 data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+                            className="border-slate-300 data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
                         />
 
-                        <Label htmlFor="remember" className="text-xs text-slate-300 cursor-pointer">
+                        <Label htmlFor="remember" className="text-xs text-slate-600 cursor-pointer">
                             Mantener sesión activa en este equipo
                         </Label>
                     </div>
@@ -122,7 +122,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     {/* BOTÓN DE INICIO DE SESIÓN */}
                     <Button
                         type="submit"
-                        className="mt-2 w-full rounded-xl bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-700 py-2.5 font-bold text-white shadow-lg shadow-emerald-700/30 transition duration-200 hover:from-emerald-500 hover:to-green-500 hover:shadow-emerald-600/40 active:scale-[0.99] cursor-pointer"
+                        className="mt-2 w-full rounded-xl bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-700 py-2.5 font-bold text-white shadow-lg shadow-emerald-700/25 transition duration-200 hover:from-emerald-500 hover:to-green-500 hover:shadow-emerald-600/35 active:scale-[0.99] cursor-pointer"
                         tabIndex={4}
                         disabled={processing}
                     >
@@ -137,21 +137,21 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             </form>
 
             {/* ACCESO RÁPIDO PARA PRUEBAS */}
-            <div className="mt-6 rounded-2xl border border-emerald-500/20 bg-emerald-950/30 p-3.5 text-center">
+            <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-3.5 text-center shadow-xs">
                 <div className="flex items-center justify-between gap-2">
                     <div className="text-left">
-                        <p className="text-[11px] font-bold text-emerald-300 flex items-center gap-1">
-                            <UserCheck className="h-3.5 w-3.5 text-emerald-400" />
+                        <p className="text-[11px] font-bold text-emerald-900 flex items-center gap-1">
+                            <UserCheck className="h-3.5 w-3.5 text-emerald-600" />
                             Cuenta Demo
                         </p>
-                        <p className="text-[10px] text-slate-400 font-mono">admin@nuevochimbote.gob.pe</p>
+                        <p className="text-[10px] text-slate-600 font-mono">admin@nuevochimbote.gob.pe</p>
                     </div>
                     <button
                         type="button"
                         onClick={fillDemoAdmin}
-                        className="inline-flex items-center gap-1 rounded-lg border border-emerald-500/40 bg-emerald-500/20 px-2.5 py-1 text-[11px] font-semibold text-emerald-200 transition hover:bg-emerald-500/30 active:scale-95 cursor-pointer"
+                        className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1 text-[11px] font-semibold text-white transition hover:bg-emerald-700 active:scale-95 shadow-xs cursor-pointer"
                     >
-                        <Sparkles className="h-3 w-3 text-emerald-400" />
+                        <Sparkles className="h-3 w-3 text-emerald-200" />
                         Auto-llenar
                     </button>
                 </div>
@@ -159,7 +159,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
             {/* MENSAJES DEL SISTEMA */}
             {status && (
-                <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-900/30 p-3 text-center text-xs font-medium text-emerald-300">
+                <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center text-xs font-medium text-emerald-800">
                     {status}
                 </div>
             )}
