@@ -231,34 +231,35 @@ export default function WorkersIndex({ workers, nextGeneratedCode, workerManteni
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Catálogo de Trabajadores - Sistema de Áreas Verdes" />
 
-            <div className="flex flex-1 flex-col gap-6 bg-slate-50/60 p-4 md:p-6 dark:bg-background">
-                {/* ENCABEZADO PRINCIPAL */}
-                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-muted-foreground text-xs">Municipalidad Distrital de Nuevo Chimbote</span>
+            <div className="flex flex-1 flex-col p-4 md:p-6 bg-slate-50/60 dark:bg-background">
+                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6">
+                    {/* ENCABEZADO PRINCIPAL */}
+                    <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-muted-foreground text-xs">Municipalidad Distrital de Nuevo Chimbote</span>
+                            </div>
+                            <h1 className="text-foreground mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight md:text-3xl">
+                                <Users className="h-8 w-8 text-emerald-600" />
+                                Catálogo de Trabajadores
+                            </h1>
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                Registro del personal de campo para trazabilidad de mantenimientos. Los trabajadores no acceden al sistema.
+                            </p>
                         </div>
-                        <h1 className="text-foreground mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight md:text-3xl">
-                            <Users className="h-8 w-8 text-emerald-600" />
-                            Catálogo de Trabajadores
-                        </h1>
-                        <p className="text-muted-foreground mt-1 text-sm">
-                            Registro del personal de campo para trazabilidad de mantenimientos. Los trabajadores no acceden al sistema.
-                        </p>
+
+                        <button
+                            type="button"
+                            onClick={abrirCreacion}
+                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs transition hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none cursor-pointer"
+                        >
+                            <UserPlus className="h-4 w-4" />
+                            Registrar trabajador
+                        </button>
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={abrirCreacion}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs transition hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                    >
-                        <UserPlus className="h-4 w-4" />
-                        Registrar trabajador
-                    </button>
-                </div>
-
-                {/* TARJETAS RESUMEN */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {/* TARJETAS RESUMEN */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                     <div className="bg-card rounded-2xl border p-5 shadow-xs">
                         <div className="flex items-center justify-between">
                             <div>
@@ -513,6 +514,7 @@ export default function WorkersIndex({ workers, nextGeneratedCode, workerManteni
                         </table>
                     </div>
                 </section>
+                </div>
             </div>
 
             {/* ========================================================================= */}

@@ -301,7 +301,8 @@ export default function Dashboard({ institution, indicators, alertCounts, upcomi
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard | Gestión de Áreas Verdes" />
 
-            <div className="flex min-h-full flex-1 flex-col gap-6 bg-slate-50/70 p-4 md:p-6 dark:bg-background">
+            <div className="flex min-h-full flex-1 flex-col p-4 md:p-6 bg-slate-50/70 dark:bg-background">
+                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6">
                 <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950 via-emerald-800 to-green-600 p-6 text-white shadow-lg md:p-8">
                     <div className="relative z-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
                         <div className="flex items-center gap-4">
@@ -495,6 +496,7 @@ export default function Dashboard({ institution, indicators, alertCounts, upcomi
                     <p>Sistema de Gestión y Monitoreo de Áreas Verdes</p>
                     <p>{institution.municipality_name}</p>
                 </footer>
+                </div>
             </div>
         </AppLayout>
     );

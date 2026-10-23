@@ -279,7 +279,8 @@ export default function ReportsIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Reportes - Sistema de Áreas Verdes" />
 
-            <div className="flex flex-1 flex-col gap-6 bg-slate-50/60 p-4 md:p-6 dark:bg-background">
+            <div className="flex flex-1 flex-col p-4 md:p-6 bg-slate-50/60 dark:bg-background">
+                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6">
                 <div className="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
                     <div>
                         <p className="text-muted-foreground text-xs">{institutionName}</p>
@@ -928,6 +929,7 @@ export default function ReportsIndex({
                         </section>
                     </div>
                 )}
+                </div>
             </div>
         </AppLayout>
     );

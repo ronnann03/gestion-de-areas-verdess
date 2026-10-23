@@ -378,36 +378,37 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestión de Mantenimientos - Sistema de Áreas Verdes" />
 
-            <div className="flex flex-1 flex-col gap-6 bg-slate-50/60 p-4 md:p-6 dark:bg-background">
-                {/* ENCABEZADO PRINCIPAL */}
-                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-muted-foreground text-xs">Municipalidad Distrital de Nuevo Chimbote</span>
+            <div className="flex flex-1 flex-col p-4 md:p-6 bg-slate-50/60 dark:bg-background">
+                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6">
+                    {/* ENCABEZADO PRINCIPAL */}
+                    <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-muted-foreground text-xs">Municipalidad Distrital de Nuevo Chimbote</span>
+                            </div>
+                            <h1 className="text-foreground mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight md:text-3xl">
+                                <Wrench className="h-8 w-8 text-emerald-600" />
+                                Gestión de Mantenimientos
+                            </h1>
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                Control operativo, atención de órdenes por frecuencia, intervenciones extraordinarias y emisión de partes oficiales.
+                            </p>
                         </div>
-                        <h1 className="text-foreground mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight md:text-3xl">
-                            <Wrench className="h-8 w-8 text-emerald-600" />
-                            Gestión de Mantenimientos
-                        </h1>
-                        <p className="text-muted-foreground mt-1 text-sm">
-                            Control operativo, atención de órdenes por frecuencia, intervenciones extraordinarias y emisión de partes oficiales.
-                        </p>
+
+                        <div className="flex flex-wrap items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setModalExtraordinarioAbierto(true)}
+                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs transition hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 focus:outline-none cursor-pointer"
+                            >
+                                <Zap className="h-4 w-4" />
+                                Programar mantenimiento extraordinario
+                            </button>
+                        </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3">
-                        <button
-                            type="button"
-                            onClick={() => setModalExtraordinarioAbierto(true)}
-                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs transition hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                        >
-                            <Zap className="h-4 w-4" />
-                            Programar mantenimiento extraordinario
-                        </button>
-                    </div>
-                </div>
-
-                {/* TARJETAS RESUMEN DE INDICADORES */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                    {/* TARJETAS RESUMEN DE INDICADORES */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                     <div className="bg-card rounded-2xl border p-4 shadow-xs">
                         <div className="flex items-center justify-between">
                             <div>
@@ -643,7 +644,7 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
                                     <th className="px-4 py-3.5">Fecha de alerta</th>
                                     <th className="px-4 py-3.5">Trabajador / Cuadrilla</th>
                                     <th className="px-4 py-3.5 text-center">Estado</th>
-                                    <th className="px-4 py-3.5 text-center">Acciones</th>
+                                    <th className="px-3 py-3 text-center sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l shadow-xs whitespace-nowrap">Acciones</th>
                                 </tr>
                             </thead>
 
@@ -776,7 +777,7 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
                                                 </td>
 
                                                 {/* Acciones */}
-                                                <td className="px-4 py-3.5 text-center">
+                                                <td className="px-3 py-2.5 text-center sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l border-border/60 shadow-xs whitespace-nowrap">
                                                     <div className="flex items-center justify-center gap-1.5">
                                                         {/* Acciones para pendientes / próximos / vencidos */}
                                                         {['pendiente', 'proximo', 'vencido'].includes(item.computed_status) && (
@@ -875,6 +876,7 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
                         </table>
                     </div>
                 </section>
+                </div>
             </div>
 
             {/* ========================================================================= */}

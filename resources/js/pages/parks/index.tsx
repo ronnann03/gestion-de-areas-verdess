@@ -588,36 +588,37 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestión de Parques - Sistema de Áreas Verdes" />
 
-            <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 bg-slate-50/60 dark:bg-background">
-                {/* ENCABEZADO PRINCIPAL */}
-                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-xs text-muted-foreground">Municipalidad Distrital de Nuevo Chimbote</span>
+            <div className="flex flex-1 flex-col p-4 md:p-6 bg-slate-50/60 dark:bg-background">
+                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6">
+                    {/* ENCABEZADO PRINCIPAL */}
+                    <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs text-muted-foreground">Municipalidad Distrital de Nuevo Chimbote</span>
+                            </div>
+                            <h1 className="mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight md:text-3xl text-foreground">
+                                <Trees className="h-8 w-8 text-emerald-600" />
+                                Gestión de Parques y Áreas Verdes
+                            </h1>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                                Administración integral, programación automatizada de mantenimientos, control hidráulico e historial de intervenciones.
+                            </p>
                         </div>
-                        <h1 className="mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight md:text-3xl">
-                            <Trees className="h-8 w-8 text-emerald-600" />
-                            Gestión de Parques y Áreas Verdes
-                        </h1>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            Administración integral, programación automatizada de mantenimientos, control hidráulico e historial de intervenciones.
-                        </p>
+
+                        <div className="flex items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={abrirCreacion}
+                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 cursor-pointer"
+                            >
+                                <Plus className="h-4 w-4" />
+                                Registrar nuevo parque
+                            </button>
+                        </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                        <button
-                            type="button"
-                            onClick={abrirCreacion}
-                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-                        >
-                            <Plus className="h-4 w-4" />
-                            Registrar nuevo parque
-                        </button>
-                    </div>
-                </div>
-
-                {/* TARJETAS RESUMEN DE INDICADORES */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {/* TARJETAS RESUMEN DE INDICADORES */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                     <div className="rounded-2xl border bg-card p-5 shadow-sm">
                         <div className="flex items-center justify-between">
                             <div>
@@ -686,16 +687,17 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                 {/* LISTADO DE PARQUES */}
                 <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
                     {/* FILTROS Y BÚSQUEDA */}
-                    <div className="flex flex-col gap-4 border-b p-5 lg:flex-row lg:items-center lg:justify-between">
-                        <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
-                            <div className="relative flex-1 sm:max-w-xs">
+                    {/* FILTROS Y BÚSQUEDA */}
+                    <div className="flex flex-col gap-4 border-b p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+                        <div className="flex flex-1 flex-wrap items-center gap-3">
+                            <div className="relative w-full sm:w-64">
                                 <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <input
                                     type="text"
                                     value={busqueda}
                                     onChange={(e) => setBusqueda(e.target.value)}
                                     placeholder="Buscar código, nombre, ubicación..."
-                                    className="w-full rounded-xl border bg-background py-2 pr-3 pl-9 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                                    className="w-full rounded-xl border bg-background py-2 pr-3 pl-9 text-xs sm:text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                                 />
                             </div>
 
@@ -703,7 +705,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                             <select
                                 value={filtroTipo}
                                 onChange={(e) => setFiltroTipo(e.target.value)}
-                                className="rounded-xl border bg-background px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                className="w-full sm:w-auto rounded-xl border bg-background px-3 py-2 text-xs sm:text-sm outline-none transition focus:border-emerald-500"
                             >
                                 <option value="todos">Todos los tipos</option>
                                 {tiposAreaDisponibles.map((tipo) => (
@@ -715,7 +717,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                             <select
                                 value={filtroEstado}
                                 onChange={(e) => setFiltroEstado(e.target.value)}
-                                className="rounded-xl border bg-background px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                className="w-full sm:w-auto rounded-xl border bg-background px-3 py-2 text-xs sm:text-sm outline-none transition focus:border-emerald-500"
                             >
                                 <option value="todos">Toda conservación</option>
                                 <option value="bueno">Bueno</option>
@@ -727,7 +729,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                             <select
                                 value={filtroActivo}
                                 onChange={(e) => setFiltroActivo(e.target.value)}
-                                className="rounded-xl border bg-background px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                className="w-full sm:w-auto rounded-xl border bg-background px-3 py-2 text-xs sm:text-sm outline-none transition focus:border-emerald-500"
                             >
                                 <option value="todos">Todos los registros</option>
                                 <option value="activo">Solo Activos</option>
@@ -735,27 +737,27 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                             </select>
                         </div>
 
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-muted-foreground whitespace-nowrap">
                             Mostrando <span className="font-semibold text-foreground">{parquesFiltrados.length}</span> de {parks.length} parques
                         </div>
                     </div>
 
                     {/* TABLA PRINCIPAL */}
                     <div className="w-full overflow-x-auto">
-                        <table className="w-full min-w-[1050px] text-left text-sm">
+                        <table className="w-full text-left text-sm">
                             <thead className="bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b">
                                 <tr>
-                                    <th className="px-4 py-3.5 text-center w-12">Ítem</th>
-                                    <th className="px-4 py-3.5">Código</th>
-                                    <th className="px-4 py-3.5">Denominación</th>
-                                    <th className="px-4 py-3.5">Tipo de área verde</th>
-                                    <th className="px-4 py-3.5">Ubicación</th>
-                                    <th className="px-4 py-3.5 text-right">Área verde</th>
-                                    <th className="px-4 py-3.5">Punto de agua</th>
-                                    <th className="px-4 py-3.5 text-center">Conservación</th>
-                                    <th className="px-4 py-3.5 text-center">Estado</th>
-                                    <th className="px-4 py-3.5">Próximo mantenimiento</th>
-                                    <th className="px-4 py-3.5 text-center">Acciones</th>
+                                    <th className="px-3 py-3 text-center w-12 whitespace-nowrap">Ítem</th>
+                                    <th className="px-3 py-3 w-24 whitespace-nowrap">Código</th>
+                                    <th className="px-3 py-3 min-w-[180px]">Denominación</th>
+                                    <th className="px-3 py-3 w-28 whitespace-nowrap">Tipo</th>
+                                    <th className="px-3 py-3 min-w-[170px]">Ubicación</th>
+                                    <th className="px-3 py-3 text-right w-24 whitespace-nowrap">Área</th>
+                                    <th className="px-3 py-3 w-32 whitespace-nowrap">Punto de agua</th>
+                                    <th className="px-3 py-3 text-center w-28 whitespace-nowrap">Conservación</th>
+                                    <th className="px-3 py-3 text-center w-20 whitespace-nowrap">Estado</th>
+                                    <th className="px-3 py-3 min-w-[140px] whitespace-nowrap">Próx. Mantenimiento</th>
+                                    <th className="px-3 py-3 text-center w-36 whitespace-nowrap sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l shadow-xs">Acciones</th>
                                 </tr>
                             </thead>
 
@@ -767,36 +769,36 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                             className={`transition-colors hover:bg-muted/40 ${!park.is_active ? 'opacity-65 bg-slate-100/40 dark:bg-muted/40' : ''}`}
                                         >
                                             {/* Ítem visual */}
-                                            <td className="px-4 py-3.5 text-center font-mono text-xs text-muted-foreground">
+                                            <td className="px-3 py-2.5 text-center font-mono text-xs text-muted-foreground">
                                                 {index + 1}
                                             </td>
 
                                             {/* Código permanente */}
-                                            <td className="px-4 py-3.5">
+                                            <td className="px-3 py-2.5 whitespace-nowrap">
                                                 <span className="inline-flex items-center gap-1 font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-200 dark:border-emerald-800">
                                                     {park.code}
                                                 </span>
                                             </td>
 
                                             {/* Denominación */}
-                                            <td className="px-4 py-3.5 font-semibold text-foreground">
+                                            <td className="px-3 py-2.5 font-semibold text-foreground">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="truncate max-w-[200px]" title={park.name}>
+                                                    <span className="truncate max-w-[180px]" title={park.name}>
                                                         {park.name}
                                                     </span>
                                                 </div>
                                             </td>
 
                                             {/* Tipo de área verde */}
-                                            <td className="px-4 py-3.5">
+                                            <td className="px-3 py-2.5 whitespace-nowrap">
                                                 <span className="inline-flex items-center rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-neutral-800 dark:text-neutral-300">
                                                     {park.green_area_type}
                                                 </span>
                                             </td>
 
                                             {/* Ubicación */}
-                                            <td className="px-4 py-3.5">
-                                                <div className="flex flex-col text-xs max-w-[220px]">
+                                            <td className="px-3 py-2.5">
+                                                <div className="flex flex-col text-xs max-w-[180px]">
                                                     <span className="flex items-center gap-1 font-medium truncate" title={park.address ?? 'Sin dirección'}>
                                                         <MapPin className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
                                                         {park.address || 'Sin dirección'}
@@ -810,7 +812,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                             </td>
 
                                             {/* Área verde en m² */}
-                                            <td className="px-4 py-3.5 text-right font-medium">
+                                            <td className="px-3 py-2.5 text-right font-medium whitespace-nowrap">
                                                 {park.green_area ? (
                                                     <span>
                                                         {Number(park.green_area).toLocaleString('es-PE')} <span className="text-xs text-muted-foreground">m²</span>
@@ -821,7 +823,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                             </td>
 
                                             {/* Punto de agua */}
-                                            <td className="px-4 py-3.5">
+                                            <td className="px-3 py-2.5 whitespace-nowrap">
                                                 {park.has_water_point ? (
                                                     <div className="flex flex-col text-xs">
                                                         <span className="inline-flex items-center gap-1 font-medium text-blue-700 dark:text-blue-300">
@@ -840,7 +842,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                             </td>
 
                                             {/* Estado de conservación */}
-                                            <td className="px-4 py-3.5 text-center">
+                                            <td className="px-3 py-2.5 text-center whitespace-nowrap">
                                                 <span
                                                     className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize border ${ESTILOS_CONSERVACION[park.conservation_status]}`}
                                                 >
@@ -849,11 +851,11 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                             </td>
 
                                             {/* Estado del registro (Activo / Inactivo) */}
-                                            <td className="px-4 py-3.5 text-center">
+                                            <td className="px-3 py-2.5 text-center whitespace-nowrap">
                                                 <span
                                                     className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${
                                                         park.is_active
-                                                            ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
+                                                             ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
                                                             : 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'
                                                     }`}
                                                 >
@@ -863,7 +865,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                             </td>
 
                                             {/* Próximo mantenimiento */}
-                                            <td className="px-4 py-3.5">
+                                            <td className="px-3 py-2.5 whitespace-nowrap">
                                                 {park.next_maintenance ? (
                                                     <div className="flex flex-col text-xs">
                                                         <span className="font-semibold text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
@@ -879,15 +881,15 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                                 )}
                                             </td>
 
-                                            {/* ACCIONES DISPONIBLES */}
-                                            <td className="px-4 py-3.5 text-center">
+                                            {/* ACCIONES DISPONIBLES (STICKY A LA DERECHA) */}
+                                            <td className="px-3 py-2.5 text-center sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l border-border/60 shadow-xs">
                                                 <div className="flex items-center justify-center gap-1">
                                                     {/* Ver detalle */}
                                                     <button
                                                         type="button"
                                                         onClick={() => verDetalle(park)}
                                                         title="Ver detalle del parque"
-                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-emerald-100 hover:text-emerald-800 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-emerald-100 hover:text-emerald-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
                                                     >
                                                         <Eye className="h-4 w-4" />
                                                     </button>
@@ -897,7 +899,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                                         type="button"
                                                         onClick={() => abrirEdicion(park)}
                                                         title="Editar datos del parque"
-                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-amber-100 hover:text-amber-800 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-amber-100 hover:text-amber-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
                                                     >
                                                         <Edit3 className="h-4 w-4" />
                                                     </button>
@@ -907,7 +909,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                                         type="button"
                                                         onClick={() => verHistorial(park)}
                                                         title="Ver historial de mantenimientos"
-                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-blue-100 hover:text-blue-800 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-blue-100 hover:text-blue-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
                                                     >
                                                         <History className="h-4 w-4" />
                                                     </button>
@@ -917,7 +919,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                                         type="button"
                                                         onClick={() => verUbicacion(park)}
                                                         title="Ver ubicación geográfica"
-                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-purple-100 hover:text-purple-800 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-purple-100 hover:text-purple-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
                                                     >
                                                         <Navigation className="h-4 w-4" />
                                                     </button>
@@ -927,7 +929,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                                         type="button"
                                                         onClick={() => abrirMantenimientoExtraordinario(park)}
                                                         title="Registrar mantenimiento extraordinario"
-                                                        className="rounded-lg p-1.5 text-amber-600 transition hover:bg-amber-100 hover:text-amber-800 dark:hover:bg-amber-950"
+                                                        className="rounded-lg p-1.5 text-amber-600 transition hover:bg-amber-100 hover:text-amber-800 dark:hover:bg-amber-950 cursor-pointer"
                                                     >
                                                         <Zap className="h-4 w-4" />
                                                     </button>
@@ -937,7 +939,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                                         type="button"
                                                         onClick={() => toggleActivo(park)}
                                                         title={park.is_active ? 'Desactivar registro' : 'Activar registro'}
-                                                        className={`rounded-lg p-1.5 transition ${
+                                                        className={`rounded-lg p-1.5 transition cursor-pointer ${
                                                             park.is_active
                                                                 ? 'text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950'
                                                                 : 'text-emerald-600 hover:bg-emerald-100 dark:hover:bg-emerald-950'
@@ -974,6 +976,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                         </table>
                     </div>
                 </section>
+                </div>
             </div>
 
             {/* ========================================================================= */}
