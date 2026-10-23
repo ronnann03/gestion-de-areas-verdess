@@ -15,16 +15,20 @@ export default function AuthSimpleLayout({
     description,
 }: AuthLayoutProps) {
     return (
-        <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 text-white flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
-            {/* Luces y ambientación ecológica de fondo */}
-            <div className="pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full bg-emerald-500/20 blur-[128px]" />
-            <div className="pointer-events-none absolute top-1/2 -right-40 h-96 w-96 rounded-full bg-green-500/15 blur-[140px]" />
-            <div className="pointer-events-none absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-emerald-600/15 blur-[128px]" />
+        <div className="relative min-h-screen w-full overflow-x-hidden bg-slate-950 text-white flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
+            {/* Imagen de fondo del parque urbano */}
+            <div 
+                className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-700 scale-[1.02]"
+                style={{ backgroundImage: "url('/images/fondo-parque.jpg')" }}
+            />
+            
+            {/* Capa de oscurecimiento y gradiente esmeralda para contraste y legibilidad óptima */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-emerald-950/90 backdrop-blur-[2px]" />
 
-            {/* Siluetas decorativas de árboles en el fondo */}
-            <div className="pointer-events-none absolute inset-0 opacity-[0.03] flex items-center justify-center overflow-hidden">
-                <Trees className="h-[800px] w-[800px] stroke-[0.5]" />
-            </div>
+            {/* Luces y ambientación ecológica de fondo */}
+            <div className="pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full bg-emerald-500/25 blur-[128px]" />
+            <div className="pointer-events-none absolute top-1/2 -right-40 h-96 w-96 rounded-full bg-green-500/20 blur-[140px]" />
+            <div className="pointer-events-none absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-emerald-600/20 blur-[128px]" />
 
             {/* Contenedor principal con grid responsivo */}
             <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
