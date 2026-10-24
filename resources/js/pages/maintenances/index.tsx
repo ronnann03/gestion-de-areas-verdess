@@ -632,19 +632,16 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
                     </div>
 
                     {/* TABLA DE MANTENIMIENTOS */}
-                    <div className="w-full overflow-x-auto">
-                        <table className="w-full min-w-[1100px] text-left text-sm">
-                            <thead className="bg-muted/40 text-muted-foreground border-b text-xs font-semibold tracking-wider uppercase">
+                    <div className="w-full overflow-x-auto min-w-0">
+                        <table className="w-full text-left text-sm table-auto">
+                            <thead className="bg-muted/40 text-muted-foreground border-b text-[11px] font-semibold tracking-wider uppercase">
                                 <tr>
-                                    <th className="px-4 py-3.5">N° Mantenimiento</th>
-                                    <th className="px-4 py-3.5">Parque</th>
-                                    <th className="px-4 py-3.5">Tipo de área verde</th>
-                                    <th className="px-4 py-3.5">Tipo de mantenimiento</th>
-                                    <th className="px-4 py-3.5">Fecha programada</th>
-                                    <th className="px-4 py-3.5">Fecha de alerta</th>
-                                    <th className="px-4 py-3.5">Trabajador / Cuadrilla</th>
-                                    <th className="px-4 py-3.5 text-center">Estado</th>
-                                    <th className="px-3 py-3 text-center sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l shadow-xs whitespace-nowrap">Acciones</th>
+                                    <th className="px-4 py-3.5 w-[22%]">Orden y Mantenimiento</th>
+                                    <th className="px-4 py-3.5 w-[26%]">Parque e Instalación</th>
+                                    <th className="px-4 py-3.5 w-[20%]">Programación y Alerta</th>
+                                    <th className="px-4 py-3.5 w-[14%]">Responsable</th>
+                                    <th className="px-4 py-3.5 w-[10%] text-center">Estado</th>
+                                    <th className="px-3 py-3 text-center w-[8%]">Acciones</th>
                                 </tr>
                             </thead>
 
@@ -653,92 +650,86 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
                                     registrosFiltrados.map((item) => {
                                         return (
                                             <tr key={item.id} className="hover:bg-muted/30 transition">
-                                                {/* N° Mantenimiento */}
-                                                <td className="text-foreground px-4 py-3.5 font-mono text-xs font-bold">
-                                                    <span className="inline-flex items-center gap-1.5 rounded-md border bg-slate-100 px-2 py-0.5 text-slate-800 dark:bg-neutral-900 dark:text-neutral-200">
-                                                        <FileText className="h-3 w-3 text-emerald-600" />
-                                                        {item.maintenance_number}
-                                                    </span>
-                                                    {item.is_extraordinary && (
-                                                        <span className="ml-1.5 inline-block rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                                                            Extraordinario
-                                                        </span>
-                                                    )}
+                                                {/* Orden y Mantenimiento */}
+                                                <td className="px-4 py-3.5 align-top">
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                                            <span className="inline-flex items-center gap-1 rounded-md border bg-slate-100 px-2 py-0.5 font-mono text-xs font-bold text-slate-800 dark:bg-neutral-900 dark:text-neutral-200">
+                                                                <FileText className="h-3 w-3 text-emerald-600" />
+                                                                {item.maintenance_number}
+                                                            </span>
+                                                            {item.is_extraordinary && (
+                                                                <span className="rounded-md bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                                                                    Extraordinario
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <div className="text-foreground flex items-center gap-1.5 text-xs font-semibold mt-0.5">
+                                                            {item.maintenance_type.toLowerCase().includes('riego') ? (
+                                                                <Droplets className="h-3.5 w-3.5 text-blue-500 shrink-0" />
+                                                            ) : item.maintenance_type.toLowerCase().includes('poda') ? (
+                                                                <Trees className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                                                            ) : (
+                                                                <Sparkles className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                                                            )}
+                                                            <span>{item.maintenance_type}</span>
+                                                            {item.frequency_days && (
+                                                                <span className="text-muted-foreground text-[11px] font-normal">({item.frequency_days}d)</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </td>
 
-                                                {/* Parque */}
-                                                <td className="text-foreground px-4 py-3.5 font-semibold">
-                                                    <div className="flex items-center gap-2">
-                                                        <Trees className="h-4 w-4 shrink-0 text-emerald-600" />
-                                                        <div>
-                                                            <p className="line-clamp-1">{item.park_name}</p>
-                                                            <span className="text-muted-foreground font-mono text-[11px]">
-                                                                {item.park_code} • {item.park_zone}
+                                                {/* Parque e Instalación */}
+                                                <td className="px-4 py-3.5 align-top">
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="flex items-center gap-1.5">
+                                                            <Trees className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
+                                                            <p className="font-bold text-foreground text-sm line-clamp-1">{item.park_name}</p>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 flex-wrap text-[11px]">
+                                                            <span className="font-mono text-muted-foreground">
+                                                                {item.park_code} {item.park_zone ? `• ${item.park_zone}` : ''}
+                                                            </span>
+                                                            <span className="rounded-md bg-slate-200/70 px-1.5 py-0.2 text-[10px] font-semibold text-slate-800 dark:bg-neutral-800 dark:text-neutral-200">
+                                                                {item.green_area_type}
                                                             </span>
                                                         </div>
                                                     </div>
                                                 </td>
 
-                                                {/* Tipo de área verde */}
-                                                <td className="px-4 py-3.5">
-                                                    <span className="rounded-md bg-slate-200/70 px-2 py-0.5 text-xs font-semibold text-slate-800 dark:bg-neutral-800 dark:text-neutral-200">
-                                                        {item.green_area_type}
-                                                    </span>
-                                                </td>
-
-                                                {/* Tipo de mantenimiento */}
-                                                <td className="px-4 py-3.5">
-                                                    <div className="text-foreground flex items-center gap-1.5 font-medium">
-                                                        {item.maintenance_type.toLowerCase().includes('riego') ? (
-                                                            <Droplets className="h-4 w-4 text-blue-500" />
-                                                        ) : item.maintenance_type.toLowerCase().includes('poda') ? (
-                                                            <Trees className="h-4 w-4 text-emerald-600" />
-                                                        ) : (
-                                                            <Sparkles className="h-4 w-4 text-amber-500" />
-                                                        )}
-                                                        {item.maintenance_type}
-                                                        {item.frequency_days && (
-                                                            <span className="text-muted-foreground text-[11px]">({item.frequency_days}d)</span>
-                                                        )}
-                                                    </div>
-                                                </td>
-
-                                                {/* Fecha programada */}
-                                                <td className="px-4 py-3.5">
-                                                    <div className="text-foreground flex items-center gap-1.5 text-xs font-medium">
-                                                        <Calendar className="text-muted-foreground h-3.5 w-3.5" />
-                                                        {item.scheduled_date_formatted}
-                                                    </div>
-                                                </td>
-
-                                                {/* Fecha de alerta */}
-                                                <td className="px-4 py-3.5">
-                                                    {item.alert_date_formatted ? (
-                                                        <div className="flex items-center gap-1.5 text-xs">
-                                                            {item.is_alert_active ? (
-                                                                <span className="inline-flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 font-semibold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                                                                    <AlertTriangle className="h-3 w-3 animate-pulse text-amber-600" />
-                                                                    {item.alert_date_formatted}
-                                                                </span>
-                                                            ) : (
-                                                                <span className="text-muted-foreground">{item.alert_date_formatted}</span>
-                                                            )}
+                                                {/* Programación y Alerta */}
+                                                <td className="px-4 py-3.5 align-top">
+                                                    <div className="flex flex-col gap-1 text-xs">
+                                                        <div className="text-foreground flex items-center gap-1.5 font-medium">
+                                                            <Calendar className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                            <span>Prog: {item.scheduled_date_formatted}</span>
                                                         </div>
-                                                    ) : (
-                                                        <span className="text-muted-foreground text-xs italic">—</span>
-                                                    )}
+                                                        {item.alert_date_formatted && (
+                                                            <div>
+                                                                {item.is_alert_active ? (
+                                                                    <span className="inline-flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                                                                        <AlertTriangle className="h-3 w-3 animate-pulse text-amber-600" />
+                                                                        Alerta: {item.alert_date_formatted}
+                                                                    </span>
+                                                                ) : (
+                                                                    <span className="text-muted-foreground text-[11px]">Alerta: {item.alert_date_formatted}</span>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </td>
 
                                                 {/* Trabajador / Cuadrilla */}
-                                                <td className="text-foreground px-4 py-3.5 text-xs">
-                                                    <div className="flex items-center gap-1.5">
-                                                        <UserCheck className="text-muted-foreground h-3.5 w-3.5" />
-                                                        <span className="line-clamp-1">{item.responsible_worker}</span>
+                                                <td className="px-4 py-3.5 align-top text-xs">
+                                                    <div className="flex items-center gap-1.5 font-medium text-foreground">
+                                                        <UserCheck className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                        <span className="line-clamp-2">{item.responsible_worker}</span>
                                                     </div>
                                                 </td>
 
                                                 {/* Estado */}
-                                                <td className="px-4 py-3.5 text-center">
+                                                <td className="px-4 py-3.5 align-top text-center">
                                                     {item.computed_status === 'al_dia' && (
                                                         <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
                                                             <CheckCircle2 className="h-3 w-3" /> Al día
@@ -761,7 +752,7 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
                                                     )}
                                                     {item.computed_status === 'en_proceso' && (
                                                         <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-semibold text-sky-800 dark:bg-sky-950 dark:text-sky-300">
-                                                            <RefreshCw className="h-3 w-3 animate-spin text-sky-600" /> En mantenimiento
+                                                            <RefreshCw className="h-3 w-3 animate-spin text-sky-600" /> En proceso
                                                         </span>
                                                     )}
                                                     {item.computed_status === 'finalizado' && (
@@ -865,7 +856,7 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
                                     })
                                 ) : (
                                     <tr>
-                                        <td colSpan={9} className="text-muted-foreground py-12 text-center">
+                                        <td colSpan={6} className="text-muted-foreground py-12 text-center">
                                             <Wrench className="text-muted-foreground/50 mx-auto mb-2 h-8 w-8" />
                                             <p className="font-medium">No se encontraron mantenimientos para este filtro</p>
                                             <p className="mt-1 text-xs">Pruebe seleccionando otra pestaña o limpiando los campos de búsqueda.</p>

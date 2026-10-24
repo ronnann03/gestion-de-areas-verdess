@@ -362,8 +362,8 @@ export default function WorkersIndex({ workers, nextGeneratedCode, workerManteni
                     </div>
 
                     {/* TABLA */}
-                    <div className="w-full overflow-x-auto">
-                        <table className="w-full min-w-[900px] text-left text-sm">
+                    <div className="w-full overflow-x-auto min-w-0">
+                        <table className="w-full text-left text-sm">
                             <thead className="bg-muted/40 text-muted-foreground border-b text-xs font-semibold tracking-wider uppercase">
                                 <tr>
                                     <th className="w-12 px-4 py-3.5 text-center">Ítem</th>

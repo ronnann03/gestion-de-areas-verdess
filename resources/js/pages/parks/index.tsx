@@ -19,6 +19,8 @@ import {
     History,
     Info,
     Layers,
+    LayoutGrid,
+    List,
     LoaderCircle,
     LocateFixed,
     MapPin,
@@ -187,6 +189,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
     const [filtroTipo, setFiltroTipo] = useState('todos');
     const [filtroEstado, setFiltroEstado] = useState('todos');
     const [filtroActivo, setFiltroActivo] = useState('todos');
+    const [vista, setVista] = useState<'tabla' | 'tarjetas'>('tabla');
 
     // Modales
     const [modalFormularioAbierto, setModalFormularioAbierto] = useState(false);
@@ -687,7 +690,6 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                 {/* LISTADO DE PARQUES */}
                 <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
                     {/* FILTROS Y BÚSQUEDA */}
-                    {/* FILTROS Y BÚSQUEDA */}
                     <div className="flex flex-col gap-4 border-b p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
                         <div className="flex flex-1 flex-wrap items-center gap-3">
                             <div className="relative w-full sm:w-64">
@@ -737,244 +739,428 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                             </select>
                         </div>
 
-                        <div className="text-xs text-muted-foreground whitespace-nowrap">
-                            Mostrando <span className="font-semibold text-foreground">{parquesFiltrados.length}</span> de {parks.length} parques
+                        <div className="flex items-center justify-between gap-3 lg:justify-end">
+                            <div className="text-xs text-muted-foreground whitespace-nowrap">
+                                Mostrando <span className="font-semibold text-foreground">{parquesFiltrados.length}</span> de {parks.length}
+                            </div>
+
+                            {/* Selector de vista: Tabla / Tarjetas */}
+                            <div className="flex items-center rounded-xl border border-border bg-muted/40 p-1">
+                                <button
+                                    type="button"
+                                    onClick={() => setVista('tabla')}
+                                    title="Vista Tabla compacta"
+                                    className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
+                                        vista === 'tabla'
+                                            ? 'bg-background text-foreground shadow-2xs'
+                                            : 'text-muted-foreground hover:text-foreground'
+                                    }`}
+                                >
+                                    <List className="h-3.5 w-3.5" />
+                                    <span>Tabla</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setVista('tarjetas')}
+                                    title="Vista Cuadrícula de Tarjetas"
+                                    className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
+                                        vista === 'tarjetas'
+                                            ? 'bg-background text-foreground shadow-2xs'
+                                            : 'text-muted-foreground hover:text-foreground'
+                                    }`}
+                                >
+                                    <LayoutGrid className="h-3.5 w-3.5" />
+                                    <span>Tarjetas</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    {/* TABLA PRINCIPAL */}
-                    <div className="w-full overflow-x-auto min-w-0">
-                        <table className="w-full text-left text-sm">
-                            <thead className="bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b">
-                                <tr>
-                                    <th className="px-3 py-3 text-center w-12 whitespace-nowrap">Ítem</th>
-                                    <th className="px-3 py-3 w-24 whitespace-nowrap">Código</th>
-                                    <th className="px-3 py-3 min-w-[180px]">Denominación</th>
-                                    <th className="px-3 py-3 w-28 whitespace-nowrap">Tipo</th>
-                                    <th className="px-3 py-3 min-w-[170px]">Ubicación</th>
-                                    <th className="px-3 py-3 text-right w-24 whitespace-nowrap">Área</th>
-                                    <th className="px-3 py-3 w-32 whitespace-nowrap">Punto de agua</th>
-                                    <th className="px-3 py-3 text-center w-28 whitespace-nowrap">Conservación</th>
-                                    <th className="px-3 py-3 text-center w-20 whitespace-nowrap">Estado</th>
-                                    <th className="px-3 py-3 min-w-[160px] whitespace-nowrap">Próximo Mantenimiento</th>
-                                    <th className="px-3 py-3 text-center w-36 whitespace-nowrap sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l border-border shadow-xs">Acciones</th>
-                                </tr>
-                            </thead>
+                    {/* VISTA TABLA COMPACTA (SIN SCROLL HORIZONTAL) */}
+                    {vista === 'tabla' ? (
+                        <div className="w-full min-w-0 overflow-x-auto">
+                            <table className="w-full text-left text-sm table-auto">
+                                <thead className="bg-muted/40 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                                    <tr>
+                                        <th className="px-4 py-3 w-[32%]">Área Verde / Parque</th>
+                                        <th className="px-4 py-3 w-[26%]">Ubicación y Superficie</th>
+                                        <th className="px-4 py-3 w-[18%]">Agua y Conservación</th>
+                                        <th className="px-4 py-3 w-[14%]">Mantenimiento y Estado</th>
+                                        <th className="px-4 py-3 w-[10%] text-center">Acciones</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody className="divide-y divide-border">
-                                {parquesFiltrados.length > 0 ? (
-                                    parquesFiltrados.map((park, index) => (
-                                        <tr
+                                <tbody className="divide-y divide-border">
+                                    {parquesFiltrados.length > 0 ? (
+                                        parquesFiltrados.map((park, index) => (
+                                            <tr
+                                                key={park.id}
+                                                className={`transition-colors hover:bg-muted/30 ${!park.is_active ? 'opacity-65 bg-slate-100/40 dark:bg-muted/20' : ''}`}
+                                            >
+                                                {/* Columna 1: Parque e Identificación */}
+                                                <td className="px-4 py-3.5 align-top">
+                                                    <div className="flex flex-col gap-1.5">
+                                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                                            <span className="text-[10px] font-mono text-muted-foreground font-semibold">
+                                                                #{index + 1}
+                                                            </span>
+                                                            <span className="inline-flex items-center font-mono text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#ecf39e]/70 text-[#132a13] border border-[#90a955]/50 dark:bg-[#132a13] dark:text-[#ecf39e] dark:border-[#31572c]">
+                                                                {park.code}
+                                                            </span>
+                                                            <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground/80 border border-border/50">
+                                                                {park.green_area_type}
+                                                            </span>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => verDetalle(park)}
+                                                            className="text-left font-bold text-foreground hover:text-emerald-700 dark:hover:text-emerald-400 transition text-sm leading-snug cursor-pointer group flex items-center gap-1"
+                                                        >
+                                                            <span className="group-hover:underline underline-offset-2">{park.name}</span>
+                                                        </button>
+                                                        {park.registration_date && (
+                                                            <span className="text-[11px] text-muted-foreground">
+                                                                Reg: {park.registration_date}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </td>
+
+                                                {/* Columna 2: Ubicación & Superficie */}
+                                                <td className="px-4 py-3.5 align-top">
+                                                    <div className="flex flex-col gap-1 text-xs">
+                                                        <div className="flex items-start gap-1.5 text-foreground font-medium">
+                                                            <MapPin className="h-3.5 w-3.5 shrink-0 text-[#4f772d] mt-0.5" />
+                                                            <span className="line-clamp-2" title={park.address || 'Sin dirección'}>
+                                                                {park.address || 'Sin dirección'}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 flex-wrap pl-5 text-[11px] text-muted-foreground">
+                                                            {park.zone && (
+                                                                <span className="bg-muted/60 px-1.5 py-0.5 rounded border border-border/40">
+                                                                    {park.zone}
+                                                                </span>
+                                                            )}
+                                                            {park.green_area ? (
+                                                                <span className="font-semibold text-emerald-800 dark:text-emerald-300">
+                                                                    📐 {Number(park.green_area).toLocaleString('es-PE')} m²
+                                                                </span>
+                                                            ) : (
+                                                                <span>Área n/d</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                {/* Columna 3: Agua & Conservación */}
+                                                <td className="px-4 py-3.5 align-top">
+                                                    <div className="flex flex-col gap-1.5">
+                                                        {park.has_water_point ? (
+                                                            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded-md border border-blue-200 dark:border-blue-900 w-fit">
+                                                                <Droplets className="h-3.5 w-3.5 text-blue-500 shrink-0" />
+                                                                <span>{park.water_supply_type ?? 'Red'} · {park.water_point_status ?? 'Operativo'}</span>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="inline-flex items-center gap-1 text-xs text-muted-foreground w-fit">
+                                                                <Droplet className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                                                                <span>Sin punto de agua</span>
+                                                            </div>
+                                                        )}
+
+                                                        <span
+                                                            className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold capitalize border w-fit ${ESTILOS_CONSERVACION[park.conservation_status]}`}
+                                                        >
+                                                            Conservación {park.conservation_status}
+                                                        </span>
+                                                    </div>
+                                                </td>
+
+                                                {/* Columna 4: Mantenimiento & Estado */}
+                                                <td className="px-4 py-3.5 align-top">
+                                                    <div className="flex flex-col gap-1.5">
+                                                        {park.next_maintenance ? (
+                                                            <div className="flex flex-col text-xs">
+                                                                <span className="font-semibold text-[#132a13] dark:text-[#ecf39e] flex items-center gap-1">
+                                                                    <CalendarDays className="h-3.5 w-3.5 text-[#4f772d] shrink-0" />
+                                                                    <span className="truncate">{park.next_maintenance.type}</span>
+                                                                </span>
+                                                                <span className="text-[11px] text-muted-foreground pl-4.5">
+                                                                    {park.next_maintenance.date}
+                                                                </span>
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-xs text-muted-foreground italic">Sin programar</span>
+                                                        )}
+
+                                                        <span
+                                                            className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium w-fit ${
+                                                                park.is_active
+                                                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800/60'
+                                                                    : 'bg-rose-50 text-rose-700 border border-rose-200/60 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800/60'
+                                                            }`}
+                                                        >
+                                                            <span className={`h-1.5 w-1.5 rounded-full ${park.is_active ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                                                            {park.is_active ? 'Activo' : 'Inactivo'}
+                                                        </span>
+                                                    </div>
+                                                </td>
+
+                                                {/* Columna 5: Acciones */}
+                                                <td className="px-4 py-3.5 align-top text-center">
+                                                    <div className="inline-flex items-center justify-center rounded-xl border border-border/80 bg-background/80 p-0.5 shadow-2xs gap-0.5">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => verDetalle(park)}
+                                                            title="Ver detalle del parque"
+                                                            className="rounded-lg p-1.5 text-slate-600 transition hover:bg-emerald-100 hover:text-emerald-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
+                                                        >
+                                                            <Eye className="h-4 w-4" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => abrirEdicion(park)}
+                                                            title="Editar datos del parque"
+                                                            className="rounded-lg p-1.5 text-slate-600 transition hover:bg-amber-100 hover:text-amber-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
+                                                        >
+                                                            <Edit3 className="h-4 w-4" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => verUbicacion(park)}
+                                                            title="Ver ubicación en mapa"
+                                                            className="rounded-lg p-1.5 text-slate-600 transition hover:bg-purple-100 hover:text-purple-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
+                                                        >
+                                                            <Navigation className="h-4 w-4" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => verHistorial(park)}
+                                                            title="Historial de mantenimientos"
+                                                            className="rounded-lg p-1.5 text-slate-600 transition hover:bg-blue-100 hover:text-blue-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
+                                                        >
+                                                            <History className="h-4 w-4" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => abrirMantenimientoExtraordinario(park)}
+                                                            title="Registrar mantenimiento extraordinario"
+                                                            className="rounded-lg p-1.5 text-amber-600 transition hover:bg-amber-100 hover:text-amber-800 dark:hover:bg-amber-950 cursor-pointer"
+                                                        >
+                                                            <Zap className="h-4 w-4" />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => toggleActivo(park)}
+                                                            title={park.is_active ? 'Desactivar registro' : 'Activar registro'}
+                                                            className={`rounded-lg p-1.5 transition cursor-pointer ${
+                                                                park.is_active
+                                                                    ? 'text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950'
+                                                                    : 'text-emerald-600 hover:bg-emerald-100 dark:hover:bg-emerald-950'
+                                                            }`}
+                                                        >
+                                                            <Power className="h-4 w-4" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={5} className="py-16 text-center">
+                                                <Trees className="mx-auto mb-3 h-10 w-10 text-emerald-500 opacity-60" />
+                                                <p className="font-semibold text-foreground">No se encontraron parques</p>
+                                                <p className="mt-1 text-sm text-muted-foreground">
+                                                    {busqueda || filtroTipo !== 'todos' || filtroEstado !== 'todos' || filtroActivo !== 'todos'
+                                                        ? 'Prueba ajustando los filtros de búsqueda.'
+                                                        : 'Aún no se han registrado áreas verdes en el sistema municipal.'}
+                                                </p>
+                                                <button
+                                                    type="button"
+                                                    onClick={abrirCreacion}
+                                                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+                                                >
+                                                    <Plus className="h-4 w-4" />
+                                                    Registrar el primer parque
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        /* VISTA CUADRÍCULA DE TARJETAS (MODERNA Y VISUAL) */
+                        <div className="p-4 sm:p-5">
+                            {parquesFiltrados.length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                                    {parquesFiltrados.map((park) => (
+                                        <div
                                             key={park.id}
-                                            className={`transition-colors hover:bg-muted/40 ${!park.is_active ? 'opacity-65 bg-slate-100/40 dark:bg-muted/40' : ''}`}
+                                            className={`flex flex-col justify-between rounded-2xl border bg-card p-4 transition-all duration-200 hover:shadow-md hover:border-emerald-500/40 ${
+                                                !park.is_active ? 'opacity-70 bg-slate-100/50 dark:bg-muted/20' : ''
+                                            }`}
                                         >
-                                            {/* Ítem visual */}
-                                            <td className="px-3 py-2.5 text-center font-mono text-xs text-muted-foreground">
-                                                {index + 1}
-                                            </td>
-
-                                            {/* Código permanente */}
-                                            <td className="px-3 py-2.5 whitespace-nowrap">
-                                                <span className="inline-flex items-center gap-1 font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-200 dark:border-emerald-800">
-                                                    {park.code}
-                                                </span>
-                                            </td>
-
-                                            {/* Denominación */}
-                                            <td className="px-3 py-2.5 font-semibold text-foreground">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="truncate max-w-[180px]" title={park.name}>
-                                                        {park.name}
-                                                    </span>
-                                                </div>
-                                            </td>
-
-                                            {/* Tipo de área verde */}
-                                            <td className="px-3 py-2.5 whitespace-nowrap">
-                                                <span className="inline-flex items-center rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-neutral-800 dark:text-neutral-300">
-                                                    {park.green_area_type}
-                                                </span>
-                                            </td>
-
-                                            {/* Ubicación */}
-                                            <td className="px-3 py-2.5">
-                                                <div className="flex flex-col text-xs max-w-[180px]">
-                                                    <span className="flex items-center gap-1 font-medium truncate" title={park.address ?? 'Sin dirección'}>
-                                                        <MapPin className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
-                                                        {park.address || 'Sin dirección'}
-                                                    </span>
-                                                    {park.zone && (
-                                                        <span className="text-muted-foreground truncate pl-4">
-                                                            {park.zone}
+                                            <div>
+                                                {/* Header de la tarjeta */}
+                                                <div className="flex items-center justify-between gap-2 mb-2.5">
+                                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                                        <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-[#ecf39e]/70 text-[#132a13] border border-[#90a955]/40 dark:bg-[#132a13] dark:text-[#ecf39e]">
+                                                            {park.code}
                                                         </span>
-                                                    )}
-                                                </div>
-                                            </td>
-
-                                            {/* Área verde en m² */}
-                                            <td className="px-3 py-2.5 text-right font-medium whitespace-nowrap">
-                                                {park.green_area ? (
-                                                    <span>
-                                                        {Number(park.green_area).toLocaleString('es-PE')} <span className="text-xs text-muted-foreground">m²</span>
-                                                    </span>
-                                                ) : (
-                                                    <span className="text-muted-foreground">—</span>
-                                                )}
-                                            </td>
-
-                                            {/* Punto de agua */}
-                                            <td className="px-3 py-2.5 whitespace-nowrap">
-                                                {park.has_water_point ? (
-                                                    <div className="flex flex-col text-xs">
-                                                        <span className="inline-flex items-center gap-1 font-medium text-blue-700 dark:text-blue-300">
-                                                            <Droplets className="h-3 w-3 text-blue-500" />
-                                                            Sí ({park.water_supply_type ?? 'Red'})
-                                                        </span>
-                                                        <span className="text-[10px] text-muted-foreground">
-                                                            {park.water_point_status ?? 'Operativo'}
+                                                        <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-muted text-foreground/80 border border-border/50">
+                                                            {park.green_area_type}
                                                         </span>
                                                     </div>
-                                                ) : (
-                                                    <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                                                        <Droplet className="h-3 w-3 text-slate-400" /> No tiene
-                                                    </span>
-                                                )}
-                                            </td>
-
-                                            {/* Estado de conservación */}
-                                            <td className="px-3 py-2.5 text-center whitespace-nowrap">
-                                                <span
-                                                    className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize border ${ESTILOS_CONSERVACION[park.conservation_status]}`}
-                                                >
-                                                    {park.conservation_status}
-                                                </span>
-                                            </td>
-
-                                            {/* Estado del registro (Activo / Inactivo) */}
-                                            <td className="px-3 py-2.5 text-center whitespace-nowrap">
-                                                <span
-                                                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                                                        park.is_active
-                                                             ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
-                                                            : 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'
-                                                    }`}
-                                                >
-                                                    <span className={`h-1.5 w-1.5 rounded-full ${park.is_active ? 'bg-emerald-500' : 'bg-rose-500'}`} />
-                                                    {park.is_active ? 'Activo' : 'Inactivo'}
-                                                </span>
-                                            </td>
-
-                                            {/* Próximo mantenimiento */}
-                                            <td className="px-3 py-2.5 whitespace-nowrap">
-                                                {park.next_maintenance ? (
-                                                    <div className="flex flex-col text-xs">
-                                                        <span className="font-semibold text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
-                                                            <Calendar className="h-3 w-3" />
-                                                            {park.next_maintenance.type}
-                                                        </span>
-                                                        <span className="text-muted-foreground">
-                                                            {park.next_maintenance.date}
-                                                        </span>
-                                                    </div>
-                                                ) : (
-                                                    <span className="text-xs text-muted-foreground italic">Sin programar</span>
-                                                )}
-                                            </td>
-
-                                            {/* ACCIONES DISPONIBLES (STICKY A LA DERECHA) */}
-                                            <td className="px-3 py-2.5 text-center sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l border-border/60 shadow-xs">
-                                                <div className="flex items-center justify-center gap-1">
-                                                    {/* Ver detalle */}
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => verDetalle(park)}
-                                                        title="Ver detalle del parque"
-                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-emerald-100 hover:text-emerald-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
+                                                    <span
+                                                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                                                            park.is_active
+                                                                ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
+                                                                : 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'
+                                                        }`}
                                                     >
-                                                        <Eye className="h-4 w-4" />
-                                                    </button>
+                                                        <span className={`h-1.5 w-1.5 rounded-full ${park.is_active ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                                                        {park.is_active ? 'Activo' : 'Inactivo'}
+                                                    </span>
+                                                </div>
 
-                                                    {/* Editar */}
+                                                {/* Título */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => verDetalle(park)}
+                                                    className="text-left font-bold text-base text-foreground hover:text-emerald-700 dark:hover:text-emerald-400 transition cursor-pointer line-clamp-1 mb-1.5"
+                                                    title={park.name}
+                                                >
+                                                    {park.name}
+                                                </button>
+
+                                                {/* Ubicación */}
+                                                <p className="flex items-start gap-1.5 text-xs text-muted-foreground mb-3 line-clamp-2">
+                                                    <MapPin className="h-3.5 w-3.5 shrink-0 text-emerald-600 mt-0.5" />
+                                                    <span>{park.address || 'Sin dirección registrada'} {park.zone ? `· ${park.zone}` : ''}</span>
+                                                </p>
+
+                                                {/* Datos clave en píldoras */}
+                                                <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
+                                                    <div className="rounded-xl border bg-muted/30 p-2">
+                                                        <span className="text-[10px] text-muted-foreground block">Superficie</span>
+                                                        <span className="font-semibold text-foreground">
+                                                            {park.green_area ? `${Number(park.green_area).toLocaleString('es-PE')} m²` : '—'}
+                                                        </span>
+                                                    </div>
+                                                    <div className="rounded-xl border bg-muted/30 p-2">
+                                                        <span className="text-[10px] text-muted-foreground block">Conservación</span>
+                                                        <span className="font-semibold capitalize text-foreground">
+                                                            {park.conservation_status}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Banner de agua y mantenimiento */}
+                                                <div className="rounded-xl border border-dashed border-border p-2.5 space-y-1.5 text-xs mb-3 bg-muted/10">
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-muted-foreground text-[11px]">Agua:</span>
+                                                        {park.has_water_point ? (
+                                                            <span className="inline-flex items-center gap-1 font-medium text-sky-700 dark:text-sky-300">
+                                                                <Droplets className="h-3 w-3 text-sky-500" /> {park.water_supply_type ?? 'Red'}
+                                                            </span>
+                                                        ) : (
+                                                            <span className="text-muted-foreground">No tiene</span>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-muted-foreground text-[11px]">Próx. Mant.:</span>
+                                                        {park.next_maintenance ? (
+                                                            <span className="font-medium text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
+                                                                <CalendarDays className="h-3 w-3" /> {park.next_maintenance.date}
+                                                            </span>
+                                                        ) : (
+                                                            <span className="text-muted-foreground italic">Sin programar</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Barra de acciones inferior */}
+                                            <div className="flex items-center justify-between border-t border-border/60 pt-3 mt-1">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => verDetalle(park)}
+                                                    className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer"
+                                                >
+                                                    <Eye className="h-3.5 w-3.5" /> Ver ficha
+                                                </button>
+
+                                                <div className="inline-flex items-center rounded-xl border border-border/80 bg-background/80 p-0.5 shadow-2xs gap-0.5">
                                                     <button
                                                         type="button"
                                                         onClick={() => abrirEdicion(park)}
-                                                        title="Editar datos del parque"
+                                                        title="Editar datos"
                                                         className="rounded-lg p-1.5 text-slate-600 transition hover:bg-amber-100 hover:text-amber-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
                                                     >
-                                                        <Edit3 className="h-4 w-4" />
+                                                        <Edit3 className="h-3.5 w-3.5" />
                                                     </button>
-
-                                                    {/* Ver historial */}
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => verHistorial(park)}
-                                                        title="Ver historial de mantenimientos"
-                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-blue-100 hover:text-blue-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
-                                                    >
-                                                        <History className="h-4 w-4" />
-                                                    </button>
-
-                                                    {/* Ver ubicación */}
                                                     <button
                                                         type="button"
                                                         onClick={() => verUbicacion(park)}
-                                                        title="Ver ubicación geográfica"
+                                                        title="Ver mapa"
                                                         className="rounded-lg p-1.5 text-slate-600 transition hover:bg-purple-100 hover:text-purple-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
                                                     >
-                                                        <Navigation className="h-4 w-4" />
+                                                        <Navigation className="h-3.5 w-3.5" />
                                                     </button>
-
-                                                    {/* Registrar mantenimiento extraordinario */}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => verHistorial(park)}
+                                                        title="Historial"
+                                                        className="rounded-lg p-1.5 text-slate-600 transition hover:bg-blue-100 hover:text-blue-800 dark:text-neutral-300 dark:hover:bg-neutral-800 cursor-pointer"
+                                                    >
+                                                        <History className="h-3.5 w-3.5" />
+                                                    </button>
                                                     <button
                                                         type="button"
                                                         onClick={() => abrirMantenimientoExtraordinario(park)}
-                                                        title="Registrar mantenimiento extraordinario"
+                                                        title="Mantenimiento extraordinario"
                                                         className="rounded-lg p-1.5 text-amber-600 transition hover:bg-amber-100 hover:text-amber-800 dark:hover:bg-amber-950 cursor-pointer"
                                                     >
-                                                        <Zap className="h-4 w-4" />
+                                                        <Zap className="h-3.5 w-3.5" />
                                                     </button>
-
-                                                    {/* Activar o desactivar */}
                                                     <button
                                                         type="button"
                                                         onClick={() => toggleActivo(park)}
-                                                        title={park.is_active ? 'Desactivar registro' : 'Activar registro'}
+                                                        title={park.is_active ? 'Desactivar' : 'Activar'}
                                                         className={`rounded-lg p-1.5 transition cursor-pointer ${
                                                             park.is_active
                                                                 ? 'text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950'
                                                                 : 'text-emerald-600 hover:bg-emerald-100 dark:hover:bg-emerald-950'
                                                         }`}
                                                     >
-                                                        <Power className="h-4 w-4" />
+                                                        <Power className="h-3.5 w-3.5" />
                                                     </button>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={11} className="py-16 text-center">
-                                            <Trees className="mx-auto mb-3 h-10 w-10 text-emerald-500 opacity-60" />
-                                            <p className="font-semibold text-foreground">No se encontraron parques</p>
-                                            <p className="mt-1 text-sm text-muted-foreground">
-                                                {busqueda || filtroTipo !== 'todos' || filtroEstado !== 'todos' || filtroActivo !== 'todos'
-                                                    ? 'Prueba ajustando los filtros de búsqueda.'
-                                                    : 'Aún no se han registrado áreas verdes en el sistema municipal.'}
-                                            </p>
-                                            <button
-                                                type="button"
-                                                onClick={abrirCreacion}
-                                                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
-                                            >
-                                                <Plus className="h-4 w-4" />
-                                                Registrar el primer parque
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="py-16 text-center">
+                                    <Trees className="mx-auto mb-3 h-10 w-10 text-emerald-500 opacity-60" />
+                                    <p className="font-semibold text-foreground">No se encontraron parques</p>
+                                    <p className="mt-1 text-sm text-muted-foreground">
+                                        {busqueda || filtroTipo !== 'todos' || filtroEstado !== 'todos' || filtroActivo !== 'todos'
+                                            ? 'Prueba ajustando los filtros de búsqueda.'
+                                            : 'Aún no se han registrado áreas verdes en el sistema municipal.'}
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={abrirCreacion}
+                                        className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                        Registrar el primer parque
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </section>
                 </div>
             </div>
