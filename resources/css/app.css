@@ -207,5 +207,27 @@
 
     body {
         @apply bg-background text-foreground;
+        overflow-x: hidden;
     }
+}
+
+/* SCROLLBAR MODERNO Y ELEGANTE INTEGRADO A LA PALETA */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(19, 42, 19, 0.25);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4f772d;
+    border-radius: 9999px;
+    border: 1px solid rgba(236, 243, 158, 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #90a955;
 }

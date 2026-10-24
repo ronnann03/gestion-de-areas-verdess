@@ -588,31 +588,31 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestión de Parques - Sistema de Áreas Verdes" />
 
-            <div className="flex flex-1 flex-col p-4 md:p-6 bg-slate-50/60 dark:bg-background">
-                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6">
+            <div className="flex flex-1 flex-col p-4 md:p-6 bg-slate-50/60 dark:bg-background min-w-0 max-w-full overflow-x-hidden">
+                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6 min-w-0">
                     {/* ENCABEZADO PRINCIPAL */}
-                    <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                        <div>
+                    <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center min-w-0">
+                        <div className="min-w-0">
                             <div className="flex items-center gap-2">
                                 <span className="text-xs text-muted-foreground">Municipalidad Distrital de Nuevo Chimbote</span>
                             </div>
                             <h1 className="mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight md:text-3xl text-foreground">
-                                <Trees className="h-8 w-8 text-emerald-600" />
-                                Gestión de Parques y Áreas Verdes
+                                <Trees className="h-8 w-8 text-emerald-600 shrink-0" />
+                                <span className="truncate">Gestión de Parques y Áreas Verdes</span>
                             </h1>
                             <p className="mt-1 text-sm text-muted-foreground">
                                 Administración integral, programación automatizada de mantenimientos, control hidráulico e historial de intervenciones.
                             </p>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 shrink-0">
                             <button
                                 type="button"
                                 onClick={abrirCreacion}
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 cursor-pointer"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 shrink-0 whitespace-nowrap cursor-pointer"
                             >
                                 <Plus className="h-4 w-4" />
-                                Registrar nuevo parque
+                                <span>Registrar nuevo parque</span>
                             </button>
                         </div>
                     </div>
@@ -743,7 +743,7 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                     </div>
 
                     {/* TABLA PRINCIPAL */}
-                    <div className="w-full overflow-x-auto">
+                    <div className="w-full overflow-x-auto min-w-0">
                         <table className="w-full text-left text-sm">
                             <thead className="bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b">
                                 <tr>
@@ -756,8 +756,8 @@ export default function ParksIndex({ parks, nextGeneratedCode, maintenanceRules,
                                     <th className="px-3 py-3 w-32 whitespace-nowrap">Punto de agua</th>
                                     <th className="px-3 py-3 text-center w-28 whitespace-nowrap">Conservación</th>
                                     <th className="px-3 py-3 text-center w-20 whitespace-nowrap">Estado</th>
-                                    <th className="px-3 py-3 min-w-[140px] whitespace-nowrap">Próx. Mantenimiento</th>
-                                    <th className="px-3 py-3 text-center w-36 whitespace-nowrap sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l shadow-xs">Acciones</th>
+                                    <th className="px-3 py-3 min-w-[160px] whitespace-nowrap">Próximo Mantenimiento</th>
+                                    <th className="px-3 py-3 text-center w-36 whitespace-nowrap sticky right-0 bg-background/95 dark:bg-card/95 backdrop-blur-xs border-l border-border shadow-xs">Acciones</th>
                                 </tr>
                             </thead>
 

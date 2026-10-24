@@ -5,9 +5,9 @@ interface AppContentProps extends React.ComponentProps<'div'> {
     variant?: 'header' | 'sidebar';
 }
 
-export function AppContent({ variant = 'header', children, ...props }: AppContentProps) {
+export function AppContent({ variant = 'header', children, className, ...props }: AppContentProps) {
     if (variant === 'sidebar') {
-        return <SidebarInset {...props}>{children}</SidebarInset>;
+        return <SidebarInset className={`min-w-0 max-w-full overflow-x-hidden ${className || ''}`} {...props}>{children}</SidebarInset>;
     }
 
     return (

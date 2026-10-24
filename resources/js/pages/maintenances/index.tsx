@@ -378,8 +378,8 @@ export default function MaintenanceIndex({ records, counts, parks, tiposMantenim
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestión de Mantenimientos - Sistema de Áreas Verdes" />
 
-            <div className="flex flex-1 flex-col p-4 md:p-6 bg-slate-50/60 dark:bg-background">
-                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6">
+            <div className="flex flex-1 flex-col p-4 md:p-6 bg-slate-50/60 dark:bg-background min-w-0 max-w-full overflow-x-hidden">
+                <div className="mx-auto w-full max-w-7xl flex flex-col gap-6 min-w-0">
                     {/* ENCABEZADO PRINCIPAL */}
                     <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
                         <div>
